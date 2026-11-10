@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>우리학교 분실물 센터</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:"Malgun Gothic",sans-serif;background:#f4f7fb;color:#25334a}
+header{background:#244d80;color:#fff;padding:22px 8%}
+.header-inner{max-width:1100px;margin:auto;display:flex;justify-content:space-between;align-items:center;gap:16px}
+.logo{font-size:22px;font-weight:bold}
+nav a{color:#fff;text-decoration:none;margin-left:20px;font-size:14px}
+.hero{background:#e6f0fc;padding:55px 20px;text-align:center}
+.hero h1{font-size:34px;color:#244d80}
+.hero p{color:#5c6c80}
+main{max-width:1050px;margin:35px auto;padding:0 20px}
+.section-title{font-size:23px;margin-bottom:18px}
+.panel{background:#fff;border-radius:12px;padding:25px;box-shadow:0 3px 12px #203b5b10;margin-bottom:30px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}
+input,select,textarea{display:block;width:100%;min-width:0;padding:13px;border:1px solid #d7dfeb;border-radius:7px;font-size:16px;background:#fff;color:#25334a}
+input:focus,select:focus,textarea:focus{outline:2px solid #315f99;outline-offset:1px}
+textarea{min-height:90px;resize:vertical}
+.full{grid-column:1/-1}
+button{border:none;background:#315f99;color:white;border-radius:7px;padding:12px 20px;cursor:pointer;font-size:14px}
+button:hover{background:#204675}
+.submit-btn{width:100%;font-weight:bold;padding:15px}
+#message{text-align:center;color:#315f99;margin:15px;font-size:14px;overflow-wrap:anywhere}
+.search-area{display:flex;gap:10px;margin-bottom:20px}
+.search-area input{flex:1}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+.filters button{background:#e8eef6;color:#355477}
+.filters button.active{background:#315f99;color:#fff}
+.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.item-card{background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 3px 12px #203b5b10;min-width:0}
+.item-card img{display:block;width:100%;height:175px;object-fit:cover;background:#e8edf3}
+.item-info{padding:17px}
+.tag{display:inline-block;font-size:12px;padding:5px 9px;border-radius:20px;background:#e7effb;color:#315f99;margin-bottom:10px}
+.tag.found{background:#e4f5eb;color:#26804a}
+.tag.done{background:#eee;color:#777}
+.item-info h3{margin:4px 0 10px;overflow-wrap:anywhere}
+.item-info p{color:#64748b;font-size:13px;line-height:1.6;overflow-wrap:anywhere}
+.card-actions{display:flex;gap:7px;margin-top:14px}
+.card-actions button{flex:1;padding:9px 5px;font-size:12px}
+.delete-btn{background:#e8edf3;color:#52647a}
+.delete-btn:hover{background:#d8e0ea}
+.empty{grid-column:1/-1;text-align:center;color:#8491a3;padding:40px;background:#fff;border-radius:12px}
+footer{background:#244d80;color:#fff;text-align:center;padding:25px;margin-top:60px;font-size:13px}
+.small-note{font-size:12px;color:#718096;line-height:1.6;margin:12px 0 0}
+@media(max-width:750px){.cards{grid-template-columns:repeat(2,minmax(0,1fr))}.form-grid{grid-template-columns:1fr}.full{grid-column:auto}.header-inner{flex-direction:column;gap:15px}nav a{margin:0 7px}.hero h1{font-size:27px}}
+@media(max-width:480px){.cards{grid-template-columns:1fr}.search-area{flex-direction:column}.panel{padding:17px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="header-inner">
+    <div class="logo">🏫 우리학교 분실물 센터</div>
+    <nav aria-label="주 메뉴">
+      <a href="#home">홈</a>
+      <a href="#register">물건 등록</a>
+      <a href="#list">분실물 목록</a>
+    </nav>
+  </div>
+</header>
+<section class="hero" id="home">
+  <h1>잃어버린 물건, 함께 찾아요!</h1>
+  <p>우리 학교 학생들이 함께 만들어가는 분실물 공유 공간입니다.</p>
+</section>
+<main>
+  <section id="register">
+    <h2 class="section-title">📝 분실물 게시글 등록</h2>
+    <div class="panel">
+      <form id="itemForm">
+        <div class="form-grid">
+          <select id="type" required aria-label="게시글 종류">
+            <option value="lost">분실물 찾기</option>
+            <option value="found">습득물 등록</option>
+          </select>
+          <select id="category" required aria-label="물건 종류">
+            <option value="">물건 종류 선택</option>
+            <option>전자기기</option><option>의류</option><option>학용품</option>
+            <option>지갑 및 소지품</option><option>기타</option>
+          </select>
+          <input id="name" type="text" placeholder="물건 이름을 입력하세요." autocomplete="off" required maxlength="80">
+          <input id="place" type="text" placeholder="분실 또는 발견 장소를 입력하세요." autocomplete="off" required maxlength="120">
+          <input id="date" type="date" required>
+          <input id="photo" type="file" accept="image/*" aria-label="물건 사진 선택">
+          <textarea id="description" class="full" placeholder="물건의 특징이나 자세한 설명을 입력하세요." required maxlength="1000"></textarea>
+          <button class="submit-btn full" type="submit">게시글 등록하기</button>
+        </div>
+      </form>
+      <p class="small-note">사진은 브라우저 저장 공간을 절약하기 위해 자동으로 크기를 줄여 저장합니다. 게시글은 현재 사용 중인 브라우저에만 저장됩니다.</p>
+      <div id="message" role="status" aria-live="polite"></div>
+    </div>
+  </section>
+  <section id="list">
+    <h2 class="section-title">🔎 등록된 분실물 목록</h2>
+    <div class="search-area">
+      <input id="search" type="text" placeholder="물건 이름이나 장소를 검색하세요." aria-label="분실물 검색">
+      <button id="searchBtn" type="button">검색</button>
+    </div>
+    <div class="filters" aria-label="게시글 필터">
+      <button type="button" class="active" data-filter="all">전체</button>
+      <button type="button" data-filter="lost">분실물</button>
+      <button type="button" data-filter="found">습득물</button>
+      <button type="button" data-filter="active">처리 중</button>
+      <button type="button" data-filter="done">찾기 완료</button>
+    </div>
+    <div class="cards" id="cards"><div class="empty">등록된 게시글이 없습니다.</div></div>
+  </section>
+</main>
+<footer>우리학교 분실물 센터 | 모두가 함께 찾는 학교</footer>
+<script>
+(() => {
+  "use strict";
+
+  const STORAGE_KEY = "schoolLostItems_v1";
+  const form = document.getElementById("itemForm");
+  const message = document.getElementById("message");
+  const cards = document.getElementById("cards");
+  const searchInput = document.getElementById("search");
+  let currentFilter = "all";
+  let allItems = loadItems();
+
+  function loadItems() {
+    try {
+      const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+      return Array.isArray(saved) ? saved : [];
+    } catch (error) {
+      return [];
+    }
+  }
+
+  function saveItems() {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(allItems));
+      return true;
+    } catch (error) {
+      message.textContent = "저장 공간이 부족합니다. 사진 크기를 줄이거나 게시글을 삭제한 뒤 다시 시도해주세요.";
+      return false;
+    }
+  }
+
+  function compressImage(file) {
+    return new Promise((resolve, reject) => {
+      if (!file) return resolve("");
+      if (!file.type.startsWith("image/")) {
+        reject(new Error("이미지 파일만 선택할 수 있습니다."));
+        return;
+      }
+      if (file.size > 10 * 1024 * 1024) {
+        reject(new Error("원본 사진은 10MB 이하인 파일을 선택해주세요."));
+        return;
+      }
+      const reader = new FileReader();
+      reader.onerror = () => reject(new Error("사진을 읽지 못했습니다."));
+      reader.onload = () => {
+        const image = new Image();
+        image.onerror = () => reject(new Error("이미지 파일을 열 수 없습니다."));
+        image.onload = () => {
+          const maxSide = 900;
+          const scale = Math.min(1, maxSide / Math.max(image.width, image.height));
+          const canvas = document.createElement("canvas");
+          canvas.width = Math.max(1, Math.round(image.width * scale));
+          canvas.height = Math.max(1, Math.round(image.height * scale));
+          const context = canvas.getContext("2d");
+          context.drawImage(image, 0, 0, canvas.width, canvas.height);
+          resolve(canvas.toDataURL("image/jpeg", 0.72));
+        };
+        image.src = reader.result;
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  function addText(parent, tagName, text, className) {
+    const element = document.createElement(tagName);
+    element.textContent = text;
+    if (className) element.className = className;
+    parent.appendChild(element);
+    return element;
+  }
+
+  function renderItems() {
+    const keyword = searchInput.value.trim().toLocaleLowerCase("ko-KR");
+    const filtered = allItems.filter(item => {
+      const searchable = [item.name, item.place, item.category, item.description]
+        .some(value => String(value || "").toLocaleLowerCase("ko-KR").includes(keyword));
+      const matchesFilter = currentFilter === "all" ||
+        (currentFilter === "active" && item.status === "active") ||
+        (currentFilter === "done" && item.status === "done") ||
+        item.type === currentFilter;
+      return searchable && matchesFilter;
+    }).sort((a, b) => b.createdAt - a.createdAt);
+
+    cards.replaceChildren();
+    if (!filtered.length) {
+      addText(cards, "div", "등록된 게시글이 없습니다.", "empty");
+      return;
+    }
+
+    filtered.forEach(item => {
+      const card = document.createElement("article");
+      card.className = "item-card";
+
+      const image = document.createElement("img");
+      image.alt = item.name ? item.name + " 사진" : "분실물 사진";
+      image.loading = "lazy";
+      image.src = item.photoURL || "https://placehold.co/500x300/e8edf3/64748b?text=No+Image";
+      card.appendChild(image);
+
+      const info = document.createElement("div");
+      info.className = "item-info";
+      const tagText = item.status === "done" ? "찾기 완료" : item.type === "lost" ? "분실물" : "습득물";
+      const tagClass = item.status === "done" ? "tag done" : item.type === "found" ? "tag found" : "tag";
+      addText(info, "span", tagText, tagClass);
+      addText(info, "h3", item.name || "이름 없음");
+      [
+        "종류: " + (item.category || "-"),
+        "장소: " + (item.place || "-"),
+        "날짜: " + (item.date || "-"),
+        "설명: " + (item.description || "-")
+      ].forEach(line => addText(info, "p", line));
+
+      const actions = document.createElement("div");
+      actions.className = "card-actions";
+      const statusBtn = document.createElement("button");
+      statusBtn.type = "button";
+      statusBtn.textContent = item.status === "done" ? "다시 처리 중" : "찾기 완료";
+      statusBtn.addEventListener("click", () => changeStatus(item.id));
+      const deleteBtn = document.createElement("button");
+      deleteBtn.type = "button";
+      deleteBtn.className = "delete-btn";
+      deleteBtn.textContent = "삭제";
+      deleteBtn.addEventListener("click", () => removeItem(item.id));
+      actions.append(statusBtn, deleteBtn);
+      info.appendChild(actions);
+      card.appendChild(info);
+      cards.appendChild(card);
+    });
+  }
+
+  function changeStatus(id) {
+    const item = allItems.find(entry => entry.id === id);
+    if (!item) return;
+    item.status = item.status === "done" ? "active" : "done";
+    if (saveItems()) {
+      message.textContent = "게시글 상태를 변경했습니다.";
+      renderItems();
+    }
+  }
+
+  function removeItem(id) {
+    if (!confirm("게시글을 삭제할까요?")) return;
+    const previous = allItems;
+    allItems = allItems.filter(item => item.id !== id);
+    if (saveItems()) {
+      message.textContent = "게시글을 삭제했습니다.";
+      renderItems();
+    } else {
+      allItems = previous;
+    }
+  }
+
+  form.addEventListener("submit", async event => {
+    event.preventDefault();
+    const submitButton = form.querySelector('button[type="submit"]');
+    submitButton.disabled = true;
+    message.textContent = "게시글을 등록하는 중입니다.";
+
+    try {
+      const photoURL = await compressImage(document.getElementById("photo").files[0]);
+      const item = {
+        id: (crypto.randomUUID ? crypto.randomUUID() : String(Date.now()) + Math.random()),
+        type: document.getElementById("type").value,
+        category: document.getElementById("category").value,
+        name: document.getElementById("name").value.trim(),
+        place: document.getElementById("place").value.trim(),
+        date: document.getElementById("date").value,
+        description: document.getElementById("description").value.trim(),
+        photoURL,
+        status: "active",
+        createdAt: Date.now()
+      };
+
+      if (!item.name || !item.place || !item.category || !item.date || !item.description) {
+        throw new Error("필수 항목을 모두 입력해주세요.");
+      }
+
+      allItems.unshift(item);
+      if (!saveItems()) {
+        allItems = allItems.filter(entry => entry.id !== item.id);
+        throw new Error("브라우저 저장 공간을 확인한 뒤 다시 시도해주세요.");
+      }
+      form.reset();
+      message.textContent = "게시글이 등록되었습니다!";
+      renderItems();
+    } catch (error) {
+      message.textContent = "등록 실패: " + (error.message || "알 수 없는 오류");
+    } finally {
+      submitButton.disabled = false;
+    }
+  });
+
+  document.getElementById("searchBtn").addEventListener("click", renderItems);
+  searchInput.addEventListener("input", renderItems);
+
+  document.querySelectorAll(".filters button").forEach(button => {
+    button.addEventListener("click", () => {
+      document.querySelectorAll(".filters button").forEach(other => other.classList.remove("active"));
+      button.classList.add("active");
+      currentFilter = button.dataset.filter;
+      renderItems();
+    });
+  });
+
+  renderItems();
+})();
+</script>
+</body>
+</html>
